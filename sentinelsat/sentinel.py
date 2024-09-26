@@ -1394,7 +1394,11 @@ def _parse_opensearch_response(products):
                         except KeyError:
                             # Sentinel-3 has one element 'arr'
                             # which violates the name:content convention
-                            product_dict[p["name"]] = f(p["name"])
+                            try:
+                                product_dict[p["name"]] = f(p["str"])
+                            except KeyError:
+                                # if either content and str are not present use None
+                                product_dict[p["name"]] = None
     return output
 
 
