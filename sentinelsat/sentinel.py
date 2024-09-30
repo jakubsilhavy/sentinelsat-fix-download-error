@@ -1386,20 +1386,12 @@ def _parse_opensearch_response(products):
                 else:
                     f = converters.get(key, default_converter)
                     for p in properties:
-                        try:
-                            if "content" in p:
-                                product_dict[p["name"]] = f(p["content"])
-                            else:
-                                product_dict[p["name"]] = f(p["str"])
-                        except KeyError:
-                            # Sentinel-3 has one element 'arr'
-                            # which violates the name:content convention
-                            if "content" in p:
-                                product_dict[p["name"]] = f(p["content"])
-                            elif "str" in p:
-                                product_dict[p["name"]] = f(p["str"])
-                            else:
-                                product_dict[p["name"]] = None
+                        if "content" in p:
+                            product_dict[p["name"]] = f(p["content"])
+                        elif "str" in p:
+                            product_dict[p["name"]] = f(p["str"])
+                        else:
+                            product_dict[p["name"]] = None
     return output
 
 
